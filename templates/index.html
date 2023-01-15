@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Predict Stock Prices</title>
+  </head>
+  <body>
+    <h1>Predict Stock Prices</h1>
+    <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <input type="submit" value="Predict">
+    </form>
+    {% if predictions %}
+    <h2>Predictions</h2>
+    <table>
+      <tr>
+        <th>Ground truth</th>
+        <th>Predictions</th>
+      </tr>
+      {% for ground_truth, prediction in zip(y_test, predictions) %}
+      <tr>
+        <td>{{ ground_truth }}</td>
+        <td>{{ prediction }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </body>
+</html>
