@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, render_template, jsonify, send_file
+import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
 from keras.models import Sequential, load_model
@@ -44,16 +45,12 @@ def predict():
         model.compile(loss='mean_squared_error', optimizer='adam')
         model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=2)
         model.save("stock_predictor.h5")
-        model = load_model("stock_predictor.h5")
         predictions = model.predict(X_test)
-        plt.plot(y_test, label='Ground truth')
-        plt.plot(predictions, label='Predictions')
-        plt.legend()
-        #plt.show()
-        plt.savefig("prediction_chart.png")
-        return send_file("prediction_chart.png", mimetype='image/png')
-        return jsonify({'predictions': str(predictions.tolist())})
-
+        x_axis = df.index[-len(y_test):]
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=x_axis, y=y_test,mode='lines', name='Ground truth'))
+        fig.add_trace(go.Scatter(x=x_axis, y=predictions.flatten(),mode='lines', name='Predictions'))
+        return fig.to_html()
 
 if __name__ == '__main__':
     app.run(debug=True)
