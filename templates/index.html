@@ -1,28 +1,55 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Predict Stock Prices</title>
-  </head>
-  <body>
-    <h1>Predict Stock Prices</h1>
-    <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit" value="Predict">
-    </form>
-    {% if predictions %}
-    <h2>Predictions</h2>
-    <table>
-      <tr>
-        <th>Ground truth</th>
-        <th>Predictions</th>
-      </tr>
-      {% for ground_truth, prediction in zip(y_test, predictions) %}
-      <tr>
-        <td>{{ ground_truth }}</td>
-        <td>{{ prediction }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-    {% endif %}
-  </body>
+    <head>
+        <title>Stock Predictor</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+        <style>
+            body {
+                background-color: #f0f0f0;
+            }
+            .container {
+                background-color: #ffffff;
+                border: dashed 2px #dddddd;
+                border-radius: 10px;
+                padding: 20px;
+                text-align: center;
+                width: 600px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container d-flex align-items-center h-30">
+            <div class="mx-auto">
+                <h1 class="text-center">Stock Predictor</h1>
+                <a href="https://github.com/Achraf0407">By Achraf Chemchaq</a>
+                <a>&</a>
+                <a href="https://chat.openai.com/">ChatGPT</a>
+                <form method="POST" enctype="multipart/form-data" action="predict">
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file">
+                            <label class="custom-file-label" for="file">
+                                <i class="fa fa-file-excel"></i> Select File
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Predict</button>
+                </form>
+            </div>
+        </div>
+    <script>
+            var fileInput = document.getElementById("file");
+            var fileLabel = document.querySelector(".custom-file-label");
+            fileInput.addEventListener("change", function(){
+            fileLabel.innerHTML = fileInput.files[0].name;
+        });
+    </script>
+
+    </body>
 </html>
